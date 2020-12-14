@@ -2,7 +2,7 @@ local thd   = require 'bee.thread'
 local net   = require 'net'
 local timer = require 'timer'
 
-local link = net.listen('tcp', '0.0.0.0', 11577)
+local link = net.listen('tcp', '127.0.0.1', 11577)
 
 local methods = {
     ['pulse'] = require 'method.pulse'
