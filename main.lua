@@ -5,7 +5,8 @@ local timer = require 'timer'
 local link = net.listen('tcp', '0.0.0.0', 11577)
 
 local methods = {
-    ['pulse'] = require 'method.pulse'
+    ['pulse'] = require 'method.pulse',
+    ['error'] = require 'method.error',
 }
 
 local function pushMethod(data)
