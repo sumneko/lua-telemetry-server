@@ -1,5 +1,5 @@
 local timer = require 'timer'
-local log   = require 'log'
+local log   = dofile 'log.lua'
 local fs    = require 'bee.filesystem'
 local util  = require 'utility'
 
