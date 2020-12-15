@@ -14,7 +14,9 @@ local function pushMethod(data)
 end
 
 function link:on_accept(stream)
+    print('on_accept')
     function stream:on_data(data)
+        print('on_data', data)
         xpcall(pushMethod, print, data)
     end
 end
