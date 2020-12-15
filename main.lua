@@ -14,7 +14,7 @@ local function pushMethod(data)
         local msg, index = string.unpack('s4', data)
         data = data:sub(index)
         local method, token, start = string.unpack('zz', msg)
-        methods[method](token, data:sub(start))
+        methods[method](token, msg:sub(start))
     end
 end
 
