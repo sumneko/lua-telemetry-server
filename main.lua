@@ -26,6 +26,10 @@ function link:on_accept(stream)
     end
 end
 
+function link:on_error(...)
+    print('ERROR!', ...)
+end
+
 while true do
     thd.sleep(0.01)
     net.update()
