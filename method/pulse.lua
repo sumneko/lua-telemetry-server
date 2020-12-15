@@ -11,7 +11,7 @@ local userClients = {}
 timer.loop(10, function ()
     local clients = {}
     for token, lastPulse in pairs(userPulses) do
-        if timer.clock() - lastPulse > 120 then
+        if timer.clock() - lastPulse > 60 * 60 then
             userPulses[token]  = nil
             userClients[token] = nil
         else
