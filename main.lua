@@ -17,11 +17,10 @@ function link:on_accept(stream)
     function stream:on_data(data)
         xpcall(pushMethod, print, data)
     end
-    stream:update()
 end
 
 while true do
     thd.sleep(0.01)
-    link:update()
+    net.update()
     timer.update()
 end
