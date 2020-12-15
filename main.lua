@@ -10,8 +10,12 @@ local methods = {
 }
 
 local function pushMethod(data)
-    local method, token, index = string.unpack('zz', data)
-    methods[method](token, data:sub(index))
+    while #data > 0 do
+        local msg, index = string.unpack('s4', data)
+        data = data:sub(index)
+        local method, token, start = string.unpack('zz', msg)
+        methods[method](token, data:sub(start))
+    end
 end
 
 function link:on_accept(stream)
