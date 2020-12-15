@@ -23,6 +23,7 @@ function link:on_accept(stream)
     function stream:on_data(data)
         print('on_data', data)
         xpcall(pushMethod, print, data)
+        self:close()
     end
 end
 
