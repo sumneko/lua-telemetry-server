@@ -2,7 +2,7 @@ local thd   = require 'bee.thread'
 local net   = require 'net'
 local timer = require 'timer'
 
-local link = net.listen('tcp', '0.0.0.0', 11577)
+local listen = net.listen('tcp', '0.0.0.0', 11577)
 
 local methods = {
     ['pulse'] = require 'method.pulse',
@@ -18,16 +18,33 @@ local function pushMethod(data)
     end
 end
 
-function link:on_accept(stream)
+local links = {}
+
+function listen:on_accept(link)
     print('on_accept')
-    function stream:on_data(data)
+
+    table.insert(links, link)
+    if #links >= 50 then
+        links[1]:close()
+    end
+
+    function link:on_data(data)
         print('on_data', data)
         xpcall(pushMethod, print, data)
         self:close()
     end
+
+    function link:on_close()
+        for i = 1, #links do
+            if links[i] == self then
+                table.remove(links, i)
+                break
+            end
+        end
+    end
 end
 
-function link:on_error(...)
+function listen:on_error(...)
     print('ERROR!', ...)
 end
 
