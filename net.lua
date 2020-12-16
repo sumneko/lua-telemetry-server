@@ -280,12 +280,16 @@ function m.update(timeout)
         for i = 1, #rd do
             local fd = rd[i]
             local s = map[fd]
-            s:select_r()
+            if s then
+                s:select_r()
+            end
         end
         for i = 1, #wr do
             local fd = wr[i]
             local s = map[fd]
-            s:select_w()
+            if s then
+                s:select_w()
+            end
         end
     end
 end
