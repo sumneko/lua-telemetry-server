@@ -10,11 +10,19 @@ local methods = {
 }
 
 local function pushMethod(data)
-    while #data > 0 do
-        local msg, index = string.unpack('s4', data)
-        data = data:sub(index)
+    while true do
+        while #data < 4 do
+            data = data .. coroutine.yield()
+        end
+        local len = string.unpack('I4', data)
+        data = data:sub(5)
+        while #data < len do
+            data = data .. coroutine.yield()
+        end
+        local msg = data:sub(1, len)
         local method, token, start = string.unpack('zz', msg)
         methods[method](token, msg:sub(start))
+        data = data:sub(len + 1)
     end
 end
 
@@ -28,10 +36,15 @@ function listen:on_accept(link)
         links[1]:close()
     end
 
+    local pushStream = coroutine.create(pushMethod)
+
     function link:on_data(data)
         print('on_data', data)
-        xpcall(pushMethod, print, data)
-        self:close()
+        local suc, err = coroutine.resume(pushStream, data)
+        if not suc then
+            self:close()
+            print(err)
+        end
     end
 
     function link:on_close()
