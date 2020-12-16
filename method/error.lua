@@ -9,6 +9,9 @@ local caches = {}
 
 return function (token, stream)
     local client, errq = string.unpack('zz', stream)
+    if errq:sub(1, 1) ~= '"' then
+        return
+    end
     local err = assert(load('return ' .. errq))()
     if caches[err] then
         return
