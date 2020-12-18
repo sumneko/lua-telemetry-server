@@ -26,8 +26,6 @@ end
 local links = {}
 
 function listen:on_accept(link)
-    print('on_accept')
-
     table.insert(links, link)
     if #links >= 50 then
         links[1]:close()
@@ -36,7 +34,6 @@ function listen:on_accept(link)
     local pushStream = coroutine.create(pushMethod)
 
     function link:on_data(data)
-        print('on_data', data)
         local suc, err = coroutine.resume(pushStream, data)
         if not suc then
             self:close()

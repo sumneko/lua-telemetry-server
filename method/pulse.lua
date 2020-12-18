@@ -32,7 +32,9 @@ timer.loop(10, function ()
     for _, client in ipairs(list) do
         buf[#buf+1] = ('% 8d : %s'):format(clients[client], client)
     end
-    log.info('Clients:\n' .. table.concat(buf, '\n'))
+    local info = 'Clients:\n' .. table.concat(buf, '\n')
+    log.info(info)
+    print(info)
 end)
 
 return function (token, stream)
