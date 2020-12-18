@@ -1,0 +1,12 @@
+{
+    "Lua.runtime.version": "LuaJIT",
+    "Lua.diagnostics.globals": [
+        "ngx",
+        "newproxy",
+        "ndk"
+    ],
+    "Lua.workspace.ignoreDir": [
+        ".vscode",
+        "script/jzslm/hotfix"
+    ]
+}
