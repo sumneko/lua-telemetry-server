@@ -98,7 +98,7 @@ function _M.connect(self, uri, opts)
         path = "/"
     end
 
-    local ssl_verify, headers, proto_header, origin_header, sock_opts = false
+    local ssl_verify, headers, proto_header, origin_header, sock_opts = false, false, false, false, false
 
     if opts then
         local protos = opts.protocols

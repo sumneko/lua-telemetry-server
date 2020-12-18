@@ -971,7 +971,8 @@ local function disass_ins(ctx)
 	x = "["..rn.."]"
       end
     elseif p == "O" then
-      local rn, rm = map_regs.x[band(rshift(op, 5), 31)]
+      local rn = map_regs.x[band(rshift(op, 5), 31)]
+      local rm
       local m = band(rshift(op, 13), 1)
       if m == 0 then
 	rm = map_regs.w[band(rshift(op, 16), 31)]
@@ -1213,4 +1214,3 @@ return {
   disass = disass,
   regname = regname
 }
-
