@@ -4,5 +4,5 @@ require 'script.jzslm.task'
 
 while true do
     timer.update()
-    sleep(1000)
+    sleep(1)
 end

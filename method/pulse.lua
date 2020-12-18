@@ -1,17 +1,16 @@
-local timer = require 'timer'
-local log   = dofile 'log.lua'
-local fs    = require 'bee.filesystem'
-local util  = require 'utility'
+local timer = require 'script.timer'
+local clog  = require 'script.log'
+local lpack = require 'lpack'
 
-log.init(fs.path '', fs.path 'log/clients.log')
+local log = clog('log/clients.log')
 
 local userPulses  = {}
 local userClients = {}
 
-timer.loop(10, function ()
+ngx.timer.every(10, function ()
     local clients = {}
     for token, lastPulse in pairs(userPulses) do
-        if timer.clock() - lastPulse > 60 * 60 then
+        if os.time() - lastPulse > 60 * 60 then
             userPulses[token]  = nil
             userClients[token] = nil
         else
@@ -32,13 +31,14 @@ timer.loop(10, function ()
     for _, client in ipairs(list) do
         buf[#buf+1] = ('% 8d : %s'):format(clients[client], client)
     end
-    local info = 'Clients:\n' .. table.concat(buf, '\n')
-    log.info(info)
-    print(info)
+    local info = 'Clients:\n' .. table.concat(buf, '\n') .. '\n'
+    log:write(info)
+    io.stdout:write(info)
+    io.stdout:flush()
 end)
 
 return function (token, stream)
-    local client = string.unpack('z', stream)
-    userPulses[token]  = timer.clock()
+    local client = lpack.unpack('z', stream)
+    userPulses[token]  = os.time()
     userClients[token] = client
 end

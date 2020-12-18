@@ -14,10 +14,11 @@ function mt:close()
 end
 
 return function (name)
-    local dir = name:gsub('[^/\\]+$', '')
+    local dir = name:gsub('[/\\]+[^/\\]+$', '')
     os.execute('md ' .. dir)
     local self = setmetatable({
         _handle = io.open(name, 'wb'),
     }, mt)
+    self._handle:setvbuf 'no'
     return self
 end

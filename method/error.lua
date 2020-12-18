@@ -1,14 +1,11 @@
-local timer = require 'timer'
-local log   = dofile 'log.lua'
-local fs    = require 'bee.filesystem'
-local util  = require 'utility'
+local clog  = require 'script.log'
+local lpack = require 'lpack'
 
-log.init(fs.path '', fs.path 'log/error.log')
-
+local log = clog 'log/error.log'
 local caches = {}
 
 return function (token, stream)
-    local client, errq = string.unpack('zz', stream)
+    local client, errq = lpack.unpack('zz', stream)
     if errq:sub(1, 1) ~= '"' then
         return
     end
@@ -17,5 +14,5 @@ return function (token, stream)
         return
     end
     caches[err] = true
-    log.info(('client: %s\n%s'):format(client, err))
+    log.write(('client: %s\n%s\n'):format(client, err))
 end
