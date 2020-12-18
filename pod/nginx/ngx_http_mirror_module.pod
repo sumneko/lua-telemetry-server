@@ -64,7 +64,7 @@ B<context:> I<location>
 
 
 Sets the URI to which an original request will be mirrored.
-Several mirrors can be specified on the same level.
+Several mirrors can be specified on the same configuration level.
 
 
 

@@ -120,10 +120,9 @@ the total number of connections to the virtual server:
 
 
 
-These directives are inherited from the previous level if and
-only if there are no
-C<limit_conn>
-directives on the current level.
+These directives are inherited from the previous configuration level
+if and only if there are no C<limit_conn> directives
+defined on the current level.
 
 
 

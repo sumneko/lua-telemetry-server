@@ -75,9 +75,9 @@ B<context:> I<location>
 
 
 Enables the use of the specified session log.
-The special value C<off> cancels all
-C<session_log> directives inherited from the previous
-configuration level.
+The special value C<off> cancels the effect
+of the C<session_log> directives
+inherited from the previous configuration level.
 
 
 

@@ -1350,27 +1350,100 @@ and I<C<replacement>> can reference them:
 
 
 
-There could be several C<proxy_cookie_domain> directives:
+Several C<proxy_cookie_domain> directives
+can be specified on the same level:
 
     
     proxy_cookie_domain localhost example.org;
     proxy_cookie_domain ~\.([a-z]+\.[a-z]+)$ $1;
 
 
+The C<off> parameter cancels the effect
+of the C<proxy_cookie_domain> directives
+inherited from the previous configuration level.
 
 
 
 
 
-The C<off> parameter cancels the effect of all
-C<proxy_cookie_domain> directives on the current level:
+
+
+=head2 proxy_cookie_flags
+
+
+B<syntax:> proxy_cookie_flags I<
+    C<off> E<verbar>
+    I<C<cookie>>
+    [I<C<flag>> ...]>
+
+
+B<default:> I<off>
+
+
+B<context:> I<http>
+
+
+B<context:> I<server>
+
+
+B<context:> I<location>
+
+
+
+This directive appeared in version 1.19.3.
+
+
+
+
+
+Sets one or more flags for the cookie.
+The I<C<cookie>> can contain text, variables, and their combinations.
+The
+C<secure>,
+C<httponly>,
+C<samesite=strict>,
+C<samesite=lax>,
+C<samesite=none>
+parameters add the corresponding flags.
+The
+C<nosecure>,
+C<nohttponly>,
+C<nosamesite>
+parameters remove the corresponding flags.
+
+
+
+
+
+The cookie can also be specified using regular expressions.
+In this case, I<C<cookie>> should start from
+the “C<~>” symbol.
+
+
+
+
+
+Several C<proxy_cookie_flags> directives
+can be specified on the same configuration level:
 
     
-    proxy_cookie_domain off;
-    proxy_cookie_domain localhost example.org;
-    proxy_cookie_domain www.example.org example.org;
+    proxy_cookie_flags one httponly;
+    proxy_cookie_flags ~ nosecure samesite=strict;
 
 
+In the example, the C<httponly> flag
+is added to the cookie C<one>,
+for all other cookies
+the C<samesite=strict> flag is added and
+the C<secure> flag is deleted.
+
+
+
+
+
+The C<off> parameter cancels the effect
+of the C<proxy_cookie_flags> directives
+inherited from the previous configuration level.
 
 
 
@@ -1454,27 +1527,17 @@ and I<C<replacement>> can reference them:
 
 
 
-There could be several C<proxy_cookie_path> directives:
+Several C<proxy_cookie_path> directives
+can be specified on the same level:
 
     
     proxy_cookie_path /one/ /;
     proxy_cookie_path / /two/;
 
 
-
-
-
-
-
-The C<off> parameter cancels the effect of all
-C<proxy_cookie_path> directives on the current level:
-
-    
-    proxy_cookie_path off;
-    proxy_cookie_path /two/ /;
-    proxy_cookie_path ~*^/user/([^/]+) /u/$1;
-
-
+The C<off> parameter cancels the effect
+of the C<proxy_cookie_path> directives
+inherited from the previous configuration level.
 
 
 
@@ -2678,7 +2741,8 @@ and I<C<replacement>> can reference them:
 
 
 
-There could be several C<proxy_redirect> directives:
+Several C<proxy_redirect> directives
+can be specified on the same level:
 
     
     proxy_redirect default;
@@ -2686,21 +2750,9 @@ There could be several C<proxy_redirect> directives:
     proxy_redirect http://www.example.com/ /;
 
 
-
-
-
-
-
-The C<off> parameter cancels the effect of all
-C<proxy_redirect> directives on the current level:
-
-    
-    proxy_redirect off;
-    proxy_redirect default;
-    proxy_redirect http://localhost:8000/  /;
-    proxy_redirect http://www.example.com/ /;
-
-
+The C<off> parameter cancels the effect
+of the C<proxy_redirect> directives
+inherited from the previous configuration level.
 
 
 
@@ -2909,10 +2961,9 @@ B<context:> I<location>
 Allows redefining or appending fields to the request header
 passed to the proxied server.
 The I<C<value>> can contain text, variables, and their combinations.
-These directives are inherited from the previous level if and
-only if there are no
-C<proxy_set_header>
-directives defined on the current level.
+These directives are inherited from the previous configuration level
+if and only if there are no C<proxy_set_header> directives
+defined on the current level.
 By default, only two fields are redefined:
 
     
@@ -3131,6 +3182,66 @@ The ciphers are specified in the format understood by the OpenSSL library.
 
 The full list can be viewed using the
 “C<openssl ciphers>” command.
+
+
+
+
+
+
+
+=head2 proxy_ssl_conf_command
+
+
+B<syntax:> proxy_ssl_conf_command I<I<C<command>>>
+
+
+
+B<context:> I<http>
+
+
+B<context:> I<server>
+
+
+B<context:> I<location>
+
+
+
+This directive appeared in version 1.19.4.
+
+
+
+
+
+Sets arbitrary OpenSSL configuration
+L<commands|https://www.openssl.org/docs/man1.1.1/man3/SSL_CONF_cmd.html>
+when establishing a connection with the proxied HTTPS server.
+
+B<NOTE>
+
+The directive is supported when using OpenSSL 1.0.2 or higher.
+
+
+
+
+
+
+Several C<proxy_ssl_conf_command> directives
+can be specified on the same level.
+These directives are inherited from the previous configuration level
+if and only if there are
+no C<proxy_ssl_conf_command> directives
+defined on the current level.
+
+
+
+
+
+
+B<NOTE>
+
+Note that configuring OpenSSL directly
+might result in unexpected behavior.
+
 
 
 

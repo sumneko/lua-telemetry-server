@@ -1955,10 +1955,9 @@ B<context:> I<location>
 
 Sets a I<C<parameter>> that should be passed to the FastCGI server.
 The I<C<value>> can contain text, variables, and their combination.
-These directives are inherited from the previous level if and
-only if there are no
-C<fastcgi_param>
-directives defined on the current level.
+These directives are inherited from the previous configuration level
+if and only if there are no C<fastcgi_param> directives
+defined on the current level.
 
 
 

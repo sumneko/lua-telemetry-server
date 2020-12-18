@@ -813,6 +813,12 @@ L<ngx_stream_return_module|ngx_stream_return_module>
 
 =item *
 
+L<ngx_stream_set_module|ngx_stream_set_module>
+
+
+
+=item *
+
 L<ngx_stream_split_clients_module|ngx_stream_split_clients_module>
 
 

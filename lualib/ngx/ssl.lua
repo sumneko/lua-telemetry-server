@@ -24,6 +24,7 @@ local ngx_lua_ffi_ssl_set_der_certificate
 local ngx_lua_ffi_ssl_clear_certs
 local ngx_lua_ffi_ssl_set_der_private_key
 local ngx_lua_ffi_ssl_raw_server_addr
+local ngx_lua_ffi_ssl_server_port
 local ngx_lua_ffi_ssl_server_name
 local ngx_lua_ffi_ssl_raw_client_addr
 local ngx_lua_ffi_cert_pem_to_der
@@ -35,6 +36,7 @@ local ngx_lua_ffi_set_cert
 local ngx_lua_ffi_set_priv_key
 local ngx_lua_ffi_free_cert
 local ngx_lua_ffi_free_priv_key
+local ngx_lua_ffi_ssl_verify_client
 
 
 if subsystem == 'http' then
@@ -49,6 +51,9 @@ if subsystem == 'http' then
 
     int ngx_http_lua_ffi_ssl_raw_server_addr(ngx_http_request_t *r, char **addr,
         size_t *addrlen, int *addrtype, char **err);
+
+    int ngx_http_lua_ffi_ssl_server_port(ngx_http_request_t *r,
+        unsigned short *server_port, char **err);
 
     int ngx_http_lua_ffi_ssl_server_name(ngx_http_request_t *r, char **name,
         size_t *namelen, char **err);
@@ -78,6 +83,9 @@ if subsystem == 'http' then
     void ngx_http_lua_ffi_free_cert(void *cdata);
 
     void ngx_http_lua_ffi_free_priv_key(void *cdata);
+
+    int ngx_http_lua_ffi_ssl_verify_client(void *r,
+        void *cdata, int depth, char **err);
     ]]
 
     ngx_lua_ffi_ssl_set_der_certificate =
@@ -86,6 +94,7 @@ if subsystem == 'http' then
     ngx_lua_ffi_ssl_set_der_private_key =
         C.ngx_http_lua_ffi_ssl_set_der_private_key
     ngx_lua_ffi_ssl_raw_server_addr = C.ngx_http_lua_ffi_ssl_raw_server_addr
+    ngx_lua_ffi_ssl_server_port = C.ngx_http_lua_ffi_ssl_server_port
     ngx_lua_ffi_ssl_server_name = C.ngx_http_lua_ffi_ssl_server_name
     ngx_lua_ffi_ssl_raw_client_addr = C.ngx_http_lua_ffi_ssl_raw_client_addr
     ngx_lua_ffi_cert_pem_to_der = C.ngx_http_lua_ffi_cert_pem_to_der
@@ -97,6 +106,7 @@ if subsystem == 'http' then
     ngx_lua_ffi_set_priv_key = C.ngx_http_lua_ffi_set_priv_key
     ngx_lua_ffi_free_cert = C.ngx_http_lua_ffi_free_cert
     ngx_lua_ffi_free_priv_key = C.ngx_http_lua_ffi_free_priv_key
+    ngx_lua_ffi_ssl_verify_client = C.ngx_http_lua_ffi_ssl_verify_client
 
 elseif subsystem == 'stream' then
     ffi.cdef[[
@@ -111,6 +121,9 @@ elseif subsystem == 'stream' then
 
     int ngx_stream_lua_ffi_ssl_raw_server_addr(ngx_stream_lua_request_t *r,
         char **addr, size_t *addrlen, int *addrtype, char **err);
+
+    int ngx_stream_lua_ffi_ssl_server_port(ngx_stream_lua_request_t *r,
+        unsigned short *server_port, char **err);
 
     int ngx_stream_lua_ffi_ssl_server_name(ngx_stream_lua_request_t *r,
         char **name, size_t *namelen, char **err);
@@ -140,6 +153,9 @@ elseif subsystem == 'stream' then
     void ngx_stream_lua_ffi_free_cert(void *cdata);
 
     void ngx_stream_lua_ffi_free_priv_key(void *cdata);
+
+    int ngx_stream_lua_ffi_ssl_verify_client(void *r,
+        void *cdata, int depth, char **err);
     ]]
 
     ngx_lua_ffi_ssl_set_der_certificate =
@@ -148,6 +164,7 @@ elseif subsystem == 'stream' then
     ngx_lua_ffi_ssl_set_der_private_key =
         C.ngx_stream_lua_ffi_ssl_set_der_private_key
     ngx_lua_ffi_ssl_raw_server_addr = C.ngx_stream_lua_ffi_ssl_raw_server_addr
+    ngx_lua_ffi_ssl_server_port = C.ngx_stream_lua_ffi_ssl_server_port
     ngx_lua_ffi_ssl_server_name = C.ngx_stream_lua_ffi_ssl_server_name
     ngx_lua_ffi_ssl_raw_client_addr = C.ngx_stream_lua_ffi_ssl_raw_client_addr
     ngx_lua_ffi_cert_pem_to_der = C.ngx_stream_lua_ffi_cert_pem_to_der
@@ -159,6 +176,7 @@ elseif subsystem == 'stream' then
     ngx_lua_ffi_set_priv_key = C.ngx_stream_lua_ffi_set_priv_key
     ngx_lua_ffi_free_cert = C.ngx_stream_lua_ffi_free_cert
     ngx_lua_ffi_free_priv_key = C.ngx_stream_lua_ffi_free_priv_key
+    ngx_lua_ffi_ssl_verify_client = C.ngx_stream_lua_ffi_ssl_verify_client
 end
 
 
@@ -167,6 +185,7 @@ local _M = { version = base.version }
 
 local charpp = ffi.new("char*[1]")
 local intp = ffi.new("int[1]")
+local ushortp = ffi.new("unsigned short[1]")
 
 
 function _M.clear_certs()
@@ -239,6 +258,21 @@ function _M.raw_server_addr()
     end
 
     return nil, nil, ffi_str(errmsg[0])
+end
+
+
+function _M.server_port()
+    local r = get_request()
+    if not r then
+        error("no request found")
+    end
+
+    local rc = ngx_lua_ffi_ssl_server_port(r, ushortp, errmsg)
+    if rc == FFI_OK then
+        return ushortp[0]
+    end
+
+    return nil, ffi_str(errmsg[0])
 end
 
 
@@ -372,6 +406,25 @@ function _M.set_priv_key(priv_key)
     end
 
     local rc = ngx_lua_ffi_set_priv_key(r, priv_key, errmsg)
+    if rc == FFI_OK then
+        return true
+    end
+
+    return nil, ffi_str(errmsg[0])
+end
+
+
+function _M.verify_client(ca_certs, depth)
+    local r = get_request()
+    if not r then
+        error("no request found")
+    end
+
+    if not depth then
+        depth = -1
+    end
+
+    local rc = ngx_lua_ffi_ssl_verify_client(r, ca_certs, depth, errmsg)
     if rc == FFI_OK then
         return true
     end

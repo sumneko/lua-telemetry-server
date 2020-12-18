@@ -40,8 +40,11 @@ C<Pre-access>
 
 
 Preliminary check for access.
-The L<ngx_stream_limit_conn_module|ngx_stream_limit_conn_module>
-module is invoked at this phase.
+The
+L<ngx_stream_limit_conn_module|ngx_stream_limit_conn_module>
+and
+L<ngx_stream_set_module|ngx_stream_set_module>
+modules are invoked at this phase.
 
 
 

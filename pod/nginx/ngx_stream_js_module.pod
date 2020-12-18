@@ -284,7 +284,7 @@ I<C<path>>>
 
 
 
-B<context:> I<http>
+B<context:> I<stream>
 
 
 

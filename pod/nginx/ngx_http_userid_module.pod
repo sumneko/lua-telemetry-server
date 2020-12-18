@@ -189,6 +189,47 @@ the end of a browser session.
 
 
 
+=head2 userid_flags
+
+
+B<syntax:> userid_flags I<
+    C<off> E<verbar>
+    I<C<flag>> ...>
+
+
+B<default:> I<off>
+
+
+B<context:> I<http>
+
+
+B<context:> I<server>
+
+
+B<context:> I<location>
+
+
+
+This directive appeared in version 1.19.3.
+
+
+
+
+
+If the parameter is not C<off>,
+defines one or more additional flags for the cookie:
+C<secure>,
+C<httponly>,
+C<samesite=strict>,
+C<samesite=lax>,
+C<samesite=none>.
+
+
+
+
+
+
+
 =head2 userid_mark
 
 

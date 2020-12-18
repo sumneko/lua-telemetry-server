@@ -1123,10 +1123,9 @@ The code 308 was not treated as a redirect until version 1.13.0.
 
 
 
-These directives are inherited from the previous level if and
-only if there are no
-C<error_page>
-directives defined on the current level.
+These directives are inherited from the previous configuration level
+if and only if there are no C<error_page> directives
+defined on the current level.
 
 
 

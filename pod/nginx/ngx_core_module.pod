@@ -330,7 +330,7 @@ B<context:> I<location>
 
 
 Configures logging.
-Several logs can be specified on the same level (1.5.2).
+Several logs can be specified on the same configuration level (1.5.2).
 If on the C<main> configuration level writing a log to a file
 is not explicitly defined, the default file will be used.
 

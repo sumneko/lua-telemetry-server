@@ -82,7 +82,7 @@ B<context:> I<limit_except>
 
 
 Sets the path, format, and configuration for a buffered log write.
-Several logs can be specified on the same level.
+Several logs can be specified on the same configuration level.
 Logging to L<syslog|syslog>
 can be configured by specifying
 the “C<syslog:>” prefix in the first parameter.
@@ -219,7 +219,7 @@ is checked, and if it does not exist the log is not
 created.
 It is thus a good idea to specify both
 L<ngx_http_core_module>
-and C<access_log> on the same level:
+and C<access_log> on the same configuration level:
 
     
     server {

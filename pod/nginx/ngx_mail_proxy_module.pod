@@ -83,6 +83,45 @@ The directive should be enabled in this case.
 
 
 
+=head2 proxy_smtp_auth
+
+
+B<syntax:> proxy_smtp_auth I<C<on> E<verbar> C<off>>
+
+
+B<default:> I<off>
+
+
+B<context:> I<mail>
+
+
+B<context:> I<server>
+
+
+
+This directive appeared in version 1.19.4.
+
+
+
+
+
+Enables or disables user authentication on the SMTP backend
+using the C<AUTH> command.
+
+
+
+
+
+If XCLIENT is also enabled,
+then the C<XCLIENT> command will not send
+the C<LOGIN> parameter.
+
+
+
+
+
+
+
 =head2 proxy_timeout
 
 

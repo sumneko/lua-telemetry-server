@@ -1878,10 +1878,9 @@ B<context:> I<location>
 
 Sets a I<C<parameter>> that should be passed to the uwsgi server.
 The I<C<value>> can contain text, variables, and their combination.
-These directives are inherited from the previous level if and
-only if there are no
-C<uwsgi_param>
-directives defined on the current level.
+These directives are inherited from the previous configuration level
+if and only if there are no C<uwsgi_param> directives
+defined on the current level.
 
 
 
@@ -2351,6 +2350,66 @@ The ciphers are specified in the format understood by the OpenSSL library.
 
 The full list can be viewed using the
 “C<openssl ciphers>” command.
+
+
+
+
+
+
+
+=head2 uwsgi_ssl_conf_command
+
+
+B<syntax:> uwsgi_ssl_conf_command I<I<C<command>>>
+
+
+
+B<context:> I<http>
+
+
+B<context:> I<server>
+
+
+B<context:> I<location>
+
+
+
+This directive appeared in version 1.19.4.
+
+
+
+
+
+Sets arbitrary OpenSSL configuration
+L<commands|https://www.openssl.org/docs/man1.1.1/man3/SSL_CONF_cmd.html>
+when establishing a connection with the secured uwsgi server.
+
+B<NOTE>
+
+The directive is supported when using OpenSSL 1.0.2 or higher.
+
+
+
+
+
+
+Several C<uwsgi_ssl_conf_command> directives
+can be specified on the same level.
+These directives are inherited from the previous configuration level
+if and only if there are
+no C<uwsgi_ssl_conf_command> directives
+defined on the current level.
+
+
+
+
+
+
+B<NOTE>
+
+Note that configuring OpenSSL directly
+might result in unexpected behavior.
+
 
 
 

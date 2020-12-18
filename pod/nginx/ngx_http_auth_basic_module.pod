@@ -75,7 +75,7 @@ Enables validation of user name and password using the
 “HTTP Basic Authentication” protocol.
 The specified parameter is used as a I<C<realm>>.
 Parameter value can contain variables (1.3.10, 1.2.7).
-The special value C<off> allows cancelling the effect
+The special value C<off> cancels the effect
 of the C<auth_basic> directive
 inherited from the previous configuration level.
 

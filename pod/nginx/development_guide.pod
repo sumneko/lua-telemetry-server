@@ -8366,7 +8366,7 @@ C<ngx_http_> and C<ngx_mail_>
                 continue;
             }
     
-            if (ngx_utf8_decode(&p, n) > 0x10ffff) {
+            if (ngx_utf8_decode(&p, last - p) > 0x10ffff) {
                 /* invalid UTF-8 */
                 return n;
             }
@@ -9105,6 +9105,50 @@ Labels are surrounded with empty lines and are indented at the previous level:
         freeaddrinfo(res);
         return NGX_ERROR;
 
+
+
+
+
+=head1 Debugging memory issues
+
+
+
+To debug memory issues such as buffer overruns or use-after-free errors, you
+can use the L<AddressSanitizer|https://en.wikipedia.org/wiki/AddressSanitizer> (ASan) supported by some modern compilers.
+To enable ASan with C<gcc> and C<clang>,
+use the C<-fsanitize=address> compiler and linker option.
+When building nginx, this can be done by adding the option to
+C<--with-cc-opt> and C<--with-ld-opt>
+parameters of the C<configure> script.
+
+
+
+
+
+Since most allocations in nginx are made from nginx internal
+pool, enabling ASan may not always be enough to debug
+memory issues.
+The internal pool allocates a big chunk of memory from the system and cuts
+smaller allocations from it.
+However, this mechanism can be disabled by setting the
+C<NGX_DEBUG_PALLOC> macro to C<1>.
+In this case, allocations are passed directly to the system allocator giving it
+full control over the buffers boundaries.
+
+
+
+
+
+The following configuration line summarizes the information provided above.
+It is recommended while developing third-party modules and testing nginx on
+different platforms.
+
+
+
+
+    
+    auto/configure --with-cc-opt='-fsanitize=address -DNGX_DEBUG_PALLOC=1'
+                   --with-ld-opt=-fsanitize=address
 
 
 

@@ -139,10 +139,9 @@ the request processing rate by the virtual server:
 
 
 
-These directives are inherited from the previous level if and
-only if there are no
-C<limit_req>
-directives on the current level.
+These directives are inherited from the previous configuration level
+if and only if there are no C<limit_req> directives
+defined on the current level.
 
 
 

@@ -74,10 +74,9 @@ Parameter value can contain variables.
 
 
 There could be several C<add_header> directives.
-These directives are inherited from the previous level if and
-only if there are no
-C<add_header>
-directives defined on the current level.
+These directives are inherited from the previous configuration level
+if and only if there are no C<add_header> directives
+defined on the current level.
 
 
 
@@ -129,10 +128,9 @@ Parameter value can contain variables.
 
 
 There could be several C<add_trailer> directives.
-These directives are inherited from the previous level if and
-only if there are no
-C<add_trailer>
-directives defined on the current level.
+These directives are inherited from the previous configuration level
+if and only if there are no C<add_trailer> directives
+defined on the current level.
 
 
 

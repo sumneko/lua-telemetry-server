@@ -65,7 +65,7 @@ B<context:> I<server>
 
 Sets the path, format,
 and configuration for a buffered log write.
-Several logs can be specified on the same level.
+Several logs can be specified on the same configuration level.
 Logging to L<syslog|syslog>
 can be configured by specifying
 the “C<syslog:>” prefix in the first parameter.

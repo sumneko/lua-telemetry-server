@@ -166,10 +166,10 @@ the L</xslt_string_param> directive can be used.
 
 
 There could be several C<xslt_param> directives.
-These directives are inherited from the previous level if and
-only if there are no
-C<xslt_param> and L</xslt_string_param>
-directives defined on the current level.
+These directives are inherited from the previous configuration level
+if and only if there are no C<xslt_param> and
+L</xslt_string_param> directives
+defined on the current level.
 
 
 
@@ -209,10 +209,10 @@ The I<C<value>> can contain variables.
 
 
 There could be several C<xslt_string_param> directives.
-These directives are inherited from the previous level if and
-only if there are no
-L</xslt_param> and C<xslt_string_param>
-directives defined on the current level.
+These directives are inherited from the previous configuration level
+if and only if there are no L</xslt_param> and
+C<xslt_string_param> directives
+defined on the current level.
 
 
 
