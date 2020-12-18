@@ -14,6 +14,7 @@ function m.accept()
         return
     end
 
+    sock:settimeout(10000)
     while true do
         local lenb
         lenb, err = sock:receive(4)
