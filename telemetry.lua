@@ -32,8 +32,10 @@ function listen:on_accept(link)
     end
 
     local pushStream = coroutine.create(pushMethod)
+    local hasRecv = false
 
     function link:on_data(data)
+        hasRecv = true
         local suc, err = coroutine.resume(pushStream, data)
         if not suc then
             self:close()
@@ -47,6 +49,9 @@ function listen:on_accept(link)
                 table.remove(links, i)
                 break
             end
+        end
+        if not hasRecv then
+            print('Close with out recv!')
         end
     end
 end
