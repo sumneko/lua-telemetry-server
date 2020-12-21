@@ -10,7 +10,7 @@ local function seeLog(path)
     ngx.say('=======================', '<br>')
     local str = f:read('*a')
                  :gsub('[\r\n]', '<br>')
-    ngx.say(str)
+    ngx.say(str, '<br>')
     f:close()
 end
 
