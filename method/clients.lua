@@ -5,10 +5,10 @@ local path = 'log/clients.log'
 local clients = {}
 local mt = {}
 mt.__index = mt
-mt._name     = '<UNKNOWN>'
-mt._OS       = '<UNKNOWN>'
-mt._CRT      = '<UNKNOWN>'
-mt._Compiler = '<UNKNOWN>'
+mt._name     = 'UNKNOWN'
+mt._OS       = 'UNKNOWN'
+mt._CRT      = 'UNKNOWN'
+mt._Compiler = 'UNKNOWN'
 
 function mt:remove()
     if self._removed then
