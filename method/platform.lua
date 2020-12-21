@@ -2,6 +2,6 @@ local lpack   = require 'lpack'
 local clients = require 'method.clients'
 
 return function (token, stream)
-    local name = lpack.unpack('z', stream)
-    clients.onPulse(token, name)
+    local OS, CRT, Compiler = lpack.unpack('zzz', stream)
+    clients.onPlatform(token, OS, CRT, Compiler)
 end

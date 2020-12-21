@@ -1,8 +1,9 @@
 local lpack = require 'lpack'
 
 local methods = {
-    ['error'] = require 'method.error',
-    ['pulse'] = require 'method.pulse'
+    ['error']    = require 'method.error',
+    ['pulse']    = require 'method.pulse',
+    ['platform'] = require 'method.platform',
 }
 
 local m = {}
