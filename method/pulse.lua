@@ -2,7 +2,7 @@ local timer = require 'script.timer'
 local clog  = require 'script.log'
 local lpack = require 'lpack'
 
-local log = clog('log/clients.log')
+local path = 'log/clients.log'
 
 local userPulses  = {}
 local userClients = {}
@@ -32,9 +32,14 @@ ngx.timer.every(10, function ()
         buf[#buf+1] = ('% 8d : %s'):format(clients[client], client)
     end
     local info = 'Clients:\n' .. table.concat(buf, '\n') .. '\n'
-    log:write(info)
     io.stdout:write(info)
     io.stdout:flush()
+
+    local f = io.open(path, 'wb')
+    if f then
+        f:write(info)
+        f:close()
+    end
 end)
 
 return function (token, stream)
