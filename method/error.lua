@@ -10,6 +10,10 @@ return function (token, stream)
         return
     end
     local err = assert(load('return ' .. errq))()
+    if err:find('invalid address')
+    or err:find('backtrack stack overflow') then
+        return
+    end
     if caches[err] then
         return
     end
