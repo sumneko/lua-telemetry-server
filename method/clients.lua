@@ -57,6 +57,10 @@ function mt:isDisconnected()
     return os.time() - self._lastPulse >= 60 * 60
 end
 
+function mt:updateConnect()
+    self._lastPulse = os.time()
+end
+
 local function getClient(token)
     if not clients[token] then
         clients[token] = setmetatable({
@@ -70,6 +74,7 @@ end
 local function onPulse(token, name)
     local client = getClient(token)
     client:setName(name)
+    client:updateConnect()
 end
 
 local function onPlatform(token, OS, CRT, Compiler)
