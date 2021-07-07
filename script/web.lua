@@ -1,5 +1,16 @@
 local m = {}
 
+local esc = {
+    ['\r'] = '<br>',
+    ['\n'] = '<br>',
+    [' ']  = '&#160;',
+    ['<']  = '&#60;',
+    ['>']  = '&#62;',
+    ['&']  = '&#38;',
+    ['"']  = '&#34;',
+    ['\''] = '&#39;',
+}
+
 local function seeLog(path)
     local f = io.open(path)
     if not f then
@@ -9,7 +20,7 @@ local function seeLog(path)
     ngx.say(path, '<br>')
     ngx.say('=======================', '<br>')
     local str = f:read('*a')
-                 :gsub('[\r\n]', '<br>')
+                 :gsub('.', esc)
     ngx.say(str, '<br>')
     f:close()
 end
