@@ -4,6 +4,7 @@ local methods = {
     ['error']    = require 'method.error',
     ['pulse']    = require 'method.pulse',
     ['platform'] = require 'method.platform',
+    ['version']  = require 'method.version',
 }
 
 local m = {}

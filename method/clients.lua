@@ -5,10 +5,11 @@ local path = 'log/clients.log'
 local clients = {}
 local mt = {}
 mt.__index = mt
-mt._name     = 'UNKNOWN'
-mt._OS       = 'UNKNOWN'
-mt._CRT      = 'UNKNOWN'
-mt._Compiler = 'UNKNOWN'
+mt._name     = '<UNKNOWN>'
+mt._OS       = '<UNKNOWN>'
+mt._CRT      = '<UNKNOWN>'
+mt._Compiler = '<UNKNOWN>'
+mt._version  = '<UNKNOWN>'
 
 function mt:remove()
     if self._removed then
@@ -53,6 +54,14 @@ function mt:getCompiler()
     return self._Compiler
 end
 
+function mt:setVersion(version)
+    self._version = version
+end
+
+function mt:getVersion()
+    return self._version
+end
+
 function mt:isDisconnected()
     return os.time() - self._lastPulse >= 60 * 60
 end
@@ -82,6 +91,11 @@ local function onPlatform(token, OS, CRT, Compiler)
     client:setOS(OS)
     client:setCRT(CRT)
     client:setCompiler(Compiler)
+end
+
+local function onVersion(token, version)
+    local client = getClient(token)
+    client:setVersion(version)
 end
 
 local function listCount(getter)
@@ -129,6 +143,10 @@ ngx.timer.every(10, function ()
     buf[#buf+1] = listCount(function (client)
         return client:getName()
     end)
+    buf[#buf+1] = '===Version==='
+    buf[#buf+1] = listCount(function (client)
+        return client:getVersion()
+    end)
     buf[#buf+1] = '===OS==='
     buf[#buf+1] = listCount(function (client)
         return client:getOS()
@@ -156,4 +174,5 @@ end)
 return {
     onPulse    = onPulse,
     onPlatform = onPlatform,
+    onVersion  = onVersion,
 }

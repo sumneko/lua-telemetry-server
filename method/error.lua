@@ -18,7 +18,7 @@ return function (token, stream)
         return
     end
     caches[err] = true
-    local info = ('client: %s\n%s\n'):format(client, err)
+    local info = ('-----------------\nversion: %s\nclient: %s\n%s\n'):format(client, err)
     log:write(info)
     io.stdout:write(info)
     io.stdout:flush()
