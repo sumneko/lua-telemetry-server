@@ -175,4 +175,5 @@ return {
     onPulse    = onPulse,
     onPlatform = onPlatform,
     onVersion  = onVersion,
+    getClient  = getClient,
 }
