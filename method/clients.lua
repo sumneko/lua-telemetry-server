@@ -3,8 +3,11 @@ local lpack = require 'lpack'
 local path = 'log/clients.log'
 
 local clients = {}
+
+---@class client
 local mt = {}
-mt.__index = mt
+mt.__index   = mt
+mt.token     = nil
 mt._name     = '<UNKNOWN>'
 mt._OS       = '<UNKNOWN>'
 mt._CRT      = '<UNKNOWN>'
@@ -62,6 +65,33 @@ function mt:getVersion()
     return self._version
 end
 
+function mt:versionGE(version)
+    local a1, b1, c1 = self._version:match '(%d+)%.(%d+)%.(%d+)'
+    local a2, b2, c2 = version:match '(%d+)%.(%d+)%.(%d+)'
+    if not a1 or not a2 then
+        return false
+    end
+    if a1 > a2 then
+        return true
+    end
+    if a1 < a2 then
+        return false
+    end
+    if b1 > b2 then
+        return true
+    end
+    if b1 < b2 then
+        return false
+    end
+    if c1 > c2 then
+        return true
+    end
+    if c1 < c2 then
+        return false
+    end
+    return true
+end
+
 function mt:isDisconnected()
     return os.time() - self._lastPulse >= 60 * 60
 end
@@ -70,6 +100,7 @@ function mt:updateConnect()
     self._lastPulse = os.time()
 end
 
+---@return client
 local function getClient(token)
     if not clients[token] then
         clients[token] = setmetatable({
