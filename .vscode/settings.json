@@ -8,5 +8,9 @@
     "Lua.workspace.ignoreDir": [
         ".vscode",
         "script/jzslm/hotfix"
-    ]
+    ],
+    "Lua.workspace.library": [
+        "${3rd}/OpenResty/library"
+    ],
+    "Lua.workspace.checkThirdParty": false
 }
