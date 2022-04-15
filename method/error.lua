@@ -23,7 +23,7 @@ end
 
 return function (token, stream)
     local client = clients.getClient(token)
-    if not client:versionGE '2.5.0' then
+    if not client:versionGE '3.0.2' then
         return
     end
     local name, errq = lpack.unpack('zz', stream)
